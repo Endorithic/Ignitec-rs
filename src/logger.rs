@@ -7,21 +7,21 @@ use owo_colors::OwoColorize;
 #[macro_export]
 macro_rules! info {
     ($logger:ident, $($arg:tt)*) => {
-        $logger._info(&format!($($arg)*))
+        $logger.__info(&format!($($arg)*))
     };
 }
 
 #[macro_export]
 macro_rules! warn {
     ($logger:ident, $($arg:tt)*) => {
-        $logger._warn(&format!($($arg)*))
+        $logger.__warn(&format!($($arg)*))
     };
 }
 
 #[macro_export]
 macro_rules! error {
     ($logger:ident, $($arg:tt)*) => {
-        $logger._error(&format!($($arg)*))
+        $logger.__error(&format!($($arg)*))
     };
 }
 
@@ -52,7 +52,8 @@ impl Logger {
 
     /// Internal method for the info! macro.
     /// Is not supposed to be used directly.
-    pub fn _info(&mut self, msg: &str) {
+    #[doc(hidden)]
+    pub fn __info(&mut self, msg: &str) {
         println!("{}: {}", "[ INFO]".bright_green().bold(), msg);
         if let Some(file) = &mut self.logfile {
             let _ = writeln!(file, "{}: {}", "[ INFO]", msg);
@@ -61,7 +62,8 @@ impl Logger {
 
     /// Internal method for the warn! macro.
     /// Is not supposed to be used directly.
-    pub fn _warn(&mut self, msg: &str) {
+    #[doc(hidden)]
+    pub fn __warn(&mut self, msg: &str) {
         println!("{}: {}", "[ WARN]".bright_yellow().bold(), msg);
         if let Some(file) = &mut self.logfile {
             let _ = writeln!(file, "{}: {}", "[ WARN]", msg);
@@ -70,7 +72,8 @@ impl Logger {
 
     /// Internal method for the error! macro.
     /// Is not supposed to be used directly.
-    pub fn _error(&mut self, msg: &str) {
+    #[doc(hidden)]
+    pub fn __error(&mut self, msg: &str) {
         eprintln!("{}: {}", "[ERROR]".bright_red().bold(), msg);
         if let Some(file) = &mut self.logfile {
             let _ = writeln!(file, "{}: {}", "[ERROR]", msg);

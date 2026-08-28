@@ -14,6 +14,33 @@ pub struct InitArgs {
     name: String,
 }
 
+/// Cleans up the created project structure if the init process fails
+struct InitGuard {
+    root: path::PathBuf,
+    is_valid: bool,
+}
+
+impl InitGuard {
+    pub fn new(root: path::PathBuf) -> Self {
+        Self {
+            root: root,
+            is_valid: false,
+        }
+    }
+
+    pub fn commit(&mut self) {
+        self.is_valid = true;
+    }
+}
+
+impl Drop for InitGuard {
+    fn drop(&mut self) {
+        if !self.is_valid {
+            let _ = fs::remove_dir_all(&self.root);
+        }
+    }
+}
+
 pub fn init(logger: &mut Logger, args: &InitArgs) -> anyhow::Result<()> {
     let cwd: path::PathBuf = env::current_dir().context("Failed to get the current directory")?;
     let project_dir: path::PathBuf = cwd.join(&args.name);
@@ -23,6 +50,8 @@ pub fn init(logger: &mut Logger, args: &InitArgs) -> anyhow::Result<()> {
 
     info!(logger, "Creating project directory `{}`", args.name);
     fs::create_dir(&project_dir).context("Failed to create project directory")?;
+
+    let mut guard: InitGuard = InitGuard::new(project_dir.clone());
 
     let src_dir: path::PathBuf = project_dir.join("src");
     let include_dir: path::PathBuf = project_dir.join("include");
@@ -46,6 +75,8 @@ pub fn init(logger: &mut Logger, args: &InitArgs) -> anyhow::Result<()> {
         "#include <print>\n\nint main() {\n    std::println(\"Hello world!\");\n}\n",
     )
     .context("Failed to write `src/main.cpp`")?;
+
+    guard.commit();
 
     Ok(())
 }

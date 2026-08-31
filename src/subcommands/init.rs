@@ -12,6 +12,9 @@ use crate::logger::Logger;
 pub struct InitArgs {
     /// The name of the project to initialize
     name: String,
+    /// Whether the project should generate a .clangd file
+    #[arg(long, default_value_t = false)]
+    clangd: bool,
 }
 
 /// Cleans up the created project structure if the init process fails
@@ -75,6 +78,13 @@ pub fn init(logger: &mut Logger, args: &InitArgs) -> anyhow::Result<()> {
         "#include <print>\n\nint main() {\n    std::println(\"Hello world!\");\n}\n",
     )
     .context("Failed to write `src/main.cpp`")?;
+
+    info!(logger, "Writing `.clangd`");
+    fs::write(
+        project_dir.join(".clangd"),
+        "CompileFlags:\n    Add: [-std=c++23, -I../include/]",
+    )
+    .context("Failed to write `.clangd`")?;
 
     guard.commit();
 

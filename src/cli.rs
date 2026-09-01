@@ -12,6 +12,10 @@ pub enum Commands {
 #[derive(Parser)]
 #[command(name = "ignitec")]
 pub struct Cli {
+    #[arg(short, long, default_value_t = false, global = true)]
+    /// Whether all log messages should also output to a log file
+    pub log: bool,
+
     #[command(subcommand)]
     pub command: Commands,
 }

@@ -82,7 +82,7 @@ pub fn init(logger: &mut Logger, args: &InitArgs) -> anyhow::Result<()> {
     info!(logger, "Writing `.clangd`");
     fs::write(
         project_dir.join(".clangd"),
-        "CompileFlags:\n    Add: [-std=c++23, -I../include/]",
+        "CompileFlags:\n    Add: [-std=c++23, -I../include/]\n",
     )
     .context("Failed to write `.clangd`")?;
 

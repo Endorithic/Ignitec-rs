@@ -1,4 +1,4 @@
-pub mod output;
+pub mod logfiles;
 
 /// Define data about the project, useful for constructing the correct project path
 pub mod project_data {

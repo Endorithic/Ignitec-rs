@@ -1,5 +1,5 @@
 mod cli;
-mod core;
+mod config;
 mod logger;
 mod subcommands;
 
@@ -9,7 +9,7 @@ use clap::Parser;
 
 use cli::Cli;
 use cli::Commands;
-use core::output;
+use config::logfiles;
 use logger::Logger;
 use subcommands::init;
 
@@ -17,7 +17,7 @@ fn main() {
     let cli: Cli = Cli::parse();
 
     let mut logger: Logger = if cli.log {
-        let log_directory: path::PathBuf = match output::log_directory() {
+        let log_directory: path::PathBuf = match logfiles::log_directory() {
             Ok(path) => path,
             Err(error) => {
                 eprintln!("Error: Failed to get log directory: {error}");
@@ -25,7 +25,7 @@ fn main() {
             }
         };
 
-        let log_name: String = output::generate_logfile_name();
+        let log_name: String = logfiles::generate_logfile_name();
         let logfile_path: path::PathBuf = log_directory.join(&log_name);
 
         match Logger::with_file(logfile_path) {

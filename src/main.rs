@@ -1,3 +1,4 @@
+mod clap_styles;
 mod cli;
 mod config;
 mod logger;

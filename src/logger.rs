@@ -56,7 +56,7 @@ impl Logger {
     pub fn __info(&mut self, msg: &str) {
         println!("{}: {}", "[ INFO]".bright_green().bold(), msg);
         if let Some(file) = &mut self.logfile {
-            let _ = writeln!(file, "{}: {}", "[ INFO]", msg);
+            let _ = writeln!(file, "[ INFO]: {}", msg);
         }
     }
 
@@ -66,7 +66,7 @@ impl Logger {
     pub fn __warn(&mut self, msg: &str) {
         println!("{}: {}", "[ WARN]".bright_yellow().bold(), msg);
         if let Some(file) = &mut self.logfile {
-            let _ = writeln!(file, "{}: {}", "[ WARN]", msg);
+            let _ = writeln!(file, "[ WARN]: {}", msg);
         }
     }
 
@@ -76,7 +76,7 @@ impl Logger {
     pub fn __error(&mut self, msg: &str) {
         eprintln!("{}: {}", "[ERROR]".bright_red().bold(), msg);
         if let Some(file) = &mut self.logfile {
-            let _ = writeln!(file, "{}: {}", "[ERROR]", msg);
+            let _ = writeln!(file, "[ERROR]: {}", msg);
         }
     }
 }

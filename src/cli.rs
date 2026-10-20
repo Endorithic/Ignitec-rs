@@ -5,6 +5,7 @@ use crate::clap_styles::CLAP_STYLE;
 
 use crate::subcommands::build::BuildArgs;
 use crate::subcommands::init::InitArgs;
+use crate::subcommands::run::RunArgs;
 
 #[derive(Subcommand)]
 pub enum Commands {
@@ -12,6 +13,8 @@ pub enum Commands {
     Init(InitArgs),
     /// Build the current project
     Build(BuildArgs),
+    /// Runs the current project
+    Run(RunArgs),
 }
 
 #[derive(Parser)]

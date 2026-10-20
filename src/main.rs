@@ -14,6 +14,7 @@ use config::logfiles;
 use logger::Logger;
 use subcommands::build;
 use subcommands::init;
+use subcommands::run;
 
 fn main() {
     let cli: Cli = Cli::parse();
@@ -44,6 +45,7 @@ fn main() {
     if let Err(error) = match cli.command {
         Commands::Init(args) => init(&mut logger, &args),
         Commands::Build(args) => build(&mut logger, &args),
+        Commands::Run(args) => run(&mut logger, &args),
     } {
         error!(logger, "{:#}", error);
         std::process::exit(1);

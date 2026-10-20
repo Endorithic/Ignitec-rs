@@ -23,7 +23,7 @@ fn main() {
             Ok(path) => path,
             Err(error) => {
                 eprintln!("Error: Failed to get log directory: {error}");
-                return;
+                std::process::exit(2);
             }
         };
 
@@ -34,7 +34,7 @@ fn main() {
             Some(logger) => logger,
             None => {
                 eprintln!("Error: Failed to create log file");
-                return;
+                std::process::exit(3);
             }
         }
     } else {
